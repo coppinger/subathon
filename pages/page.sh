@@ -1,3 +1,4 @@
+htmx_page <<"EOF"
 <script lang="ts">
 	import { onMount } from 'svelte';
 
@@ -38,3 +39,4 @@
 		<div class="h-[300px] w-full bg-slate-500"></div>
 	{/if}
 </div>
+EOF
