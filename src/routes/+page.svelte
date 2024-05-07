@@ -53,7 +53,39 @@
 	{:else}
 		<div class="h-[300px] w-full bg-slate-500"></div>
 	{/if}
-
+	{#if arr[0][0] < new Date().toString()}
+		<p class="text-xl font-semibold text-slate-400">
+			{format(new Date(), 'EEEE, MMMM d, yyyy')}
+		</p>
+		{#if session?.user}
+			<form action="?/check_in" method="POST" class="flex flex-col items-center gap-2">
+				<Button type="submit">Check-in</Button>
+				{#if form?.error}
+					<p class="text-red-500">{form.error}</p>
+				{/if}
+			</form>
+		{:else}
+			<Dialog.Root bind:open={dialogOpen}>
+				<Dialog.Trigger>
+					<Button>Check-in</Button>
+				</Dialog.Trigger>
+				<Dialog.Content>
+					<Dialog.Header>
+						<Dialog.Title>Login with Twitch</Dialog.Title>
+						<Dialog.Description>
+							You'll need to login with your Twitch account to check-in.
+						</Dialog.Description>
+					</Dialog.Header>
+					<Dialog.Footer>
+						<Button variant="outline" on:click={() => (dialogOpen = false)}>Cancel</Button>
+						<form action="?/login" method="POST">
+							<Button type="submit">Login</Button>
+						</form>
+					</Dialog.Footer>
+				</Dialog.Content>
+			</Dialog.Root>
+		{/if}
+	{/if}
 	{#each arr as [day, blob]}
 		<p class="text-xl font-semibold text-slate-400">
 			{format(new Date(day), 'EEEE, MMMM d, yyyy')}
@@ -65,6 +97,7 @@
 				>
 			{/each}
 		</div>
+
 		{#if new Date().toISOString() < day}
 			{#if session?.user}
 				<form action="?/check_in" method="POST" class="flex flex-col items-center gap-2">
