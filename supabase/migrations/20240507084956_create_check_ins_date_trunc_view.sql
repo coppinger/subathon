@@ -9,5 +9,7 @@ FROM
     LEFT JOIN profiles ON check_ins.profile_id = profiles.id
 GROUP BY
     day,
-    profiles.id;
+    profiles.id
+ORDER BY
+    day DESC;
 
