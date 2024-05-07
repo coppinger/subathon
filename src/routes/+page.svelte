@@ -98,6 +98,12 @@
 <div class="h-3 w-full bg-blue-900"></div>
 
 <div class="min-w-screen flex min-h-screen flex-col items-center gap-16 bg-neutral-950 p-8">
+	<pre>CheckinsWithProfiles length: {JSON.stringify(CheckinsWithProfiles.length, null, 2)}</pre>
+	<pre>dates: {JSON.stringify(dates, null, 2)}</pre>
+	<pre>datesWithCheckins.length: {datesWithCheckins.length}</pre>
+	<pre>datesSet: {JSON.stringify(datesSet, null, 2)}</pre>
+	<pre>datesSortedLocaleString: {JSON.stringify(datesSortedLocaleString, null, 2)}</pre>
+	<pre>datesWithCheckins: {JSON.stringify(datesWithCheckins, null, 2)}</pre>
 	{#if twitchReady}
 		<iframe
 			loading="lazy"
@@ -185,7 +191,7 @@
 			{/if}
 		{/if}
 	{/each}
-	<!-- <form action="?/dummydata" method="POST">
+	<form action="?/dummydata" method="POST">
 		<button>Dummy Data</button>
-	</form> -->
+	</form>
 </div>
