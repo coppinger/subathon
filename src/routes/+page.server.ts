@@ -97,7 +97,7 @@ export const actions = {
 				currentDate.getUTCFullYear(),
 				currentDate.getUTCMonth(),
 				currentDate.getUTCDate(),
-				0,
+				12,
 				0,
 				0
 			)
