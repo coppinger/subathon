@@ -8,6 +8,17 @@ import {
 	PUBLIC_DEV_ANON_KEY
 } from '$env/static/public';
 
+if (typeof Object.groupBy === typeof undefined) {
+	Object.groupBy = (arr, callback) => {
+		return arr.reduce((acc = {}, ...args) => {
+			const key = callback(...args);
+			acc[key] ??= [];
+			acc[key].push(args[0]);
+			return acc;
+		}, {});
+	};
+}
+
 const _URL = dev ? PUBLIC_DEV_URL : PUBLIC_SUPABASE_URL;
 const _ANON_KEY = dev ? PUBLIC_DEV_ANON_KEY : PUBLIC_SUPABASE_ANON_KEY;
 
