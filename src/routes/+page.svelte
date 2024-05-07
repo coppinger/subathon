@@ -4,6 +4,8 @@
 	import { format, eachDayOfInterval, parseISO, getYear } from 'date-fns';
 	import { X } from 'lucide-svelte';
 
+	import { formatInTimeZone } from 'date-fns-tz';
+
 	import * as Dialog from '$lib/components/ui/dialog';
 	import { Button } from '$lib/components/ui/button/index.js';
 
@@ -53,7 +55,7 @@
 	{:else}
 		<div class="h-[300px] w-full bg-slate-500"></div>
 	{/if}
-	{#if arr[0][0] < new Date().toString()}
+	<!-- {#if arr[0][0] < new Date().toString()}
 		<p class="text-xl font-semibold text-slate-400">
 			{format(new Date(), 'EEEE, MMMM d, yyyy')}
 		</p>
@@ -85,10 +87,10 @@
 				</Dialog.Content>
 			</Dialog.Root>
 		{/if}
-	{/if}
+	{/if} -->
 	{#each arr as [day, blob]}
 		<p class="text-xl font-semibold text-slate-400">
-			{format(new Date(day), 'EEEE, MMMM d, yyyy')}
+			{formatInTimeZone(new Date(day), 'Pacific/Auckland', 'EEEE, MMMM d, yyyy')}
 		</p>
 		<div class="flex flex-wrap gap-2">
 			{#each blob as { pfp_url, twitch_username: username }}
