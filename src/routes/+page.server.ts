@@ -1,29 +1,26 @@
-import { redirect } from '@sveltejs/kit';
+import { error, redirect } from '@sveltejs/kit';
 
-import type { Actions } from '@sveltejs/kit';
+import type { Page } from 'bits-ui';
 
-export const load = async ({ locals }) => {
-	const { data, error } = await locals.supabase.from('check_ins').select(
-		`
-            *,
-            profiles ( id, twitch_username, pfp_url )
-            
-        `
-	);
+export const load = async ({ locals: { supabase } }) => {
+	const { data: checksInsByDay, error: checksInsByError } = await supabase
+		.from('check_ins_by_day')
+		.select('*');
 
-	if (error) {
-		console.error(error);
-		return { error };
+	if (checksInsByError) {
+		console.log(checksInsByError);
+		return error(400, checksInsByError);
 	}
 
-	return { CheckinsWithProfiles: data };
+	return { checksInsByDay };
 };
 
-export const actions: Actions = {
+export const actions = {
 	dummydata: async ({ locals: { supabase } }) => {
 		const { data: userData, error: userError } = await supabase
 			.from('profiles')
 			.select('*')
+			.eq('twitch_username', 'thecoppinger')
 			.single();
 
 		if (userError) {

@@ -2,14 +2,13 @@
 	import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from '$env/static/public';
 
 	export let data;
+	let { session, user, end_time, checkInsWithProfiles } = data;
 	$: ({ session, user } = data);
 	let devMode: boolean = false;
 
 	import { createClient } from '@supabase/supabase-js';
 
 	const client = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY);
-
-	const { end_time } = data;
 
 	import { onMount, onDestroy } from 'svelte';
 
