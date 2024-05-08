@@ -102,8 +102,6 @@ export const actions = {
 			)
 		);
 
-		const formattedStartDate = startDate.toISOString();
-
 		const { error } = await supabase.from('check_ins').insert({
 			profile_id: session?.user?.id
 		});

@@ -45,6 +45,14 @@
 <div class="h-3 w-full bg-blue-900"></div>
 
 <div class="min-w-screen flex min-h-screen flex-col items-center gap-16 bg-neutral-950 p-8">
+	<div class="flex flex-col items-center gap-4">
+		<p class="text-xl font-semibold text-slate-400">May Subathon 2024</p>
+		<p class="max-w-md text-neutral-50">
+			31 days of live streaming, for the entire month of May 2024. Will he make it? Will he go
+			insane? Is he insane already? Many questions, not many answers. One thing is for sure
+			though... we're going to do it live 🫡<br />
+		</p>
+	</div>
 	{#if twitchReady}
 		<iframe
 			loading="lazy"

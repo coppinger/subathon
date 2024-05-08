@@ -2,33 +2,20 @@
 	import '../app.pcss';
 
 	import '@fontsource-variable/manrope';
-
-	import { goto, invalidate } from '$app/navigation';
-	import { onMount } from 'svelte';
-
-	export let data;
-	let { session, supabase } = data;
-	$: ({ session, supabase } = data);
-
-	// onMount(() => {
-	// 	const { data } = supabase.auth.onAuthStateChange((_, newSession) => {
-	// 		if (!newSession) {
-	// 			/**
-	// 			 * Queue this as a task so the navigation won't prevent the
-	// 			 * triggering function from completing
-	// 			 */
-	// 			setTimeout(() => {
-	// 				goto('/', { invalidateAll: true });
-	// 			});
-	// 		}
-	// 		if (newSession?.expires_at !== session?.expires_at) {
-	// 			invalidate('supabase:auth');
-	// 		}
-	// 	});
-
-	// 	return () => data.subscription.unsubscribe();
-	// });
 </script>
+
+<svelte:head>
+	<title>TheCoppinger — Let's do it live</title>
+	<meta name="description" content="Let's do it live!" />
+	<meta name="keywords" content="TheCoppinger, Twitch" />
+	<!-- Favicon -->
+	<link rel="icon" href="/favicon.png" />
+	<!-- Open Graph -->
+	<meta property="og:title" content="TheCoppinger — Let's do it live" />
+	<meta property="og:description" content="Let's do it live!" />
+	<meta property="og:image" content="/og-image.png" />
+	<meta property="og:url" content="https://thecoppinger.com" />
+</svelte:head>
 
 <div class="text-white">
 	<slot />
