@@ -287,22 +287,36 @@
 			insane? Is he insane already? Many questions, not many answers. One thing is for sure
 			though... we're going to do it live 🫡<br />
 		</p>
-		<div class="grid max-w-xl grid-cols-4 items-center justify-between gap-4">
-			<div class="flex w-full flex-col gap-2 rounded-lg border border-slate-800 p-8">
-				<p class="text-3xl font-bold">{days}</p>
-				<p class="text-slate-400">days</p>
+		<div
+			class="grid w-full max-w-xl grid-cols-4 items-center justify-between gap-2 rounded-lg border border-slate-800 sm:gap-4 sm:border-none"
+		>
+			<div
+				class="flex w-full flex-col items-center gap-2 rounded-lg border-slate-800 p-4 sm:border sm:p-8"
+			>
+				<p class="text-xl font-bold">{days}</p>
+				<p class="hidden text-slate-400 sm:block">days</p>
+				<p class="block text-slate-400 sm:hidden">d</p>
 			</div>
-			<div class="flex w-full flex-col gap-2 rounded-lg border border-slate-800 p-8">
-				<p class="text-3xl font-bold">{hours}</p>
-				<p class="text-slate-400">hours</p>
+			<div
+				class="flex w-full flex-col items-center gap-2 rounded-lg border-slate-800 p-4 sm:border sm:p-8"
+			>
+				<p class="text-xl font-bold">{hours}</p>
+				<p class="hidden text-slate-400 sm:block">hours</p>
+				<p class="block text-slate-400 sm:hidden">h</p>
 			</div>
-			<div class="flex w-full flex-col gap-2 rounded-lg border border-slate-800 p-8">
-				<p class="text-3xl font-bold">{minutes}</p>
-				<p class="text-slate-400">mins</p>
+			<div
+				class="flex w-full flex-col items-center gap-2 rounded-lg border-slate-800 p-4 sm:border sm:p-8"
+			>
+				<p class="text-xl font-bold">{minutes}</p>
+				<p class="hidden text-slate-400 sm:block">mins</p>
+				<p class="block text-slate-400 sm:hidden">m</p>
 			</div>
-			<div class="flex w-full flex-col gap-2 rounded-lg border border-slate-800 p-8">
-				<p class="text-3xl font-bold">{seconds}</p>
-				<p class="text-slate-400">secs</p>
+			<div
+				class="flex w-full flex-col items-center gap-2 rounded-lg border-slate-800 p-4 sm:border sm:p-8"
+			>
+				<p class="text-xl font-bold">{seconds}</p>
+				<p class="hidden text-slate-400 sm:block">secs</p>
+				<p class="block text-slate-400 sm:hidden">s</p>
 			</div>
 		</div>
 	</div>
