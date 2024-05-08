@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from '$env/static/public';
-
 	export let data;
 	let { endTimeData, supabase } = data;
 	$: ({ endTimeData, supabase } = data);

@@ -14,12 +14,23 @@
 	import type { PageData } from './$types';
 
 	export let data: PageData;
-	let { session, checksInsByDay, endTimeData } = data;
-	$: ({ session, user, endTimeData } = data);
+	let { session, checksInsByDay, endTimeData, supabase } = data;
+	$: ({ session, user, endTimeData, supabase } = data);
 
 	const endTime = new Date(endTimeData.end_time);
 
 	let arr = Object.entries(Object.groupBy(checksInsByDay, (item) => item.day!));
+
+	// supabase
+	// 	.channel('check_ins')
+	// 	.on(
+	// 		'postgres_changes',
+	// 		{ event: 'INSERT', schema: 'public', table: 'check_ins' },
+	// 		(payload) => {
+	// 			arr[0][1].push(payload.new);
+	// 		}
+	// 	)
+	// 	.subscribe();
 
 	let dialogOpen = false;
 
@@ -80,6 +91,7 @@
 <div class="h-3 w-full bg-blue-900"></div>
 
 <div class="min-w-screen flex min-h-screen flex-col items-center gap-16 bg-neutral-950 p-8">
+	<!-- <pre>{JSON.stringify(arr[0], null, 2)}</pre> -->
 	<div class="w-full max-w-[400px]">
 		<svg viewBox="0 0 1613 714" fill="none" xmlns="http://www.w3.org/2000/svg">
 			<path
@@ -293,28 +305,28 @@
 			<div
 				class="flex w-full flex-col items-center gap-2 rounded-lg border-slate-800 p-4 sm:border sm:p-8"
 			>
-				<p class="text-xl font-bold">{days}</p>
+				<p class="text-xl font-bold sm:text-3xl">{days}</p>
 				<p class="hidden text-slate-400 sm:block">days</p>
 				<p class="block text-slate-400 sm:hidden">d</p>
 			</div>
 			<div
 				class="flex w-full flex-col items-center gap-2 rounded-lg border-slate-800 p-4 sm:border sm:p-8"
 			>
-				<p class="text-xl font-bold">{hours}</p>
+				<p class="text-xl font-bold sm:text-3xl">{hours}</p>
 				<p class="hidden text-slate-400 sm:block">hours</p>
 				<p class="block text-slate-400 sm:hidden">h</p>
 			</div>
 			<div
 				class="flex w-full flex-col items-center gap-2 rounded-lg border-slate-800 p-4 sm:border sm:p-8"
 			>
-				<p class="text-xl font-bold">{minutes}</p>
+				<p class="text-xl font-bold sm:text-3xl">{minutes}</p>
 				<p class="hidden text-slate-400 sm:block">mins</p>
 				<p class="block text-slate-400 sm:hidden">m</p>
 			</div>
 			<div
 				class="flex w-full flex-col items-center gap-2 rounded-lg border-slate-800 p-4 sm:border sm:p-8"
 			>
-				<p class="text-xl font-bold">{seconds}</p>
+				<p class="text-xl font-bold sm:text-3xl">{seconds}</p>
 				<p class="hidden text-slate-400 sm:block">secs</p>
 				<p class="block text-slate-400 sm:hidden">s</p>
 			</div>
