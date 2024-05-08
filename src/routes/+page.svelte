@@ -14,8 +14,10 @@
 	import type { PageData } from './$types';
 
 	export let data: PageData;
-	let { session, checksInsByDay } = data;
-	$: ({ session, user } = data);
+	let { session, checksInsByDay, endTimeData } = data;
+	$: ({ session, user, endTimeData } = data);
+
+	const endTime = new Date(endTimeData.end_time);
 
 	let arr = Object.entries(Object.groupBy(checksInsByDay, (item) => item.day!));
 
@@ -36,6 +38,39 @@
 			toast.error('Check-in failed!', { icon: '😥' });
 		}
 	});
+
+	let days = 0;
+	let hours = 0;
+	let minutes = 0;
+	let seconds = 0;
+
+	function updateRemainingTime() {
+		const now = new Date().getTime();
+		const distance = endTime - now;
+
+		if (distance < 0) {
+			days = 0;
+			hours = 0;
+			minutes = 0;
+			seconds = 0;
+		} else {
+			days = Math.floor(distance / (1000 * 60 * 60 * 24));
+			hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+			minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+			seconds = Math.floor((distance % (1000 * 60)) / 1000);
+		}
+	}
+
+	const interval = setInterval(updateRemainingTime, 1000);
+
+	function cleanup() {
+		clearInterval(interval);
+	}
+
+	$: {
+		endTime;
+		updateRemainingTime();
+	}
 </script>
 
 <Toaster />
@@ -96,12 +131,6 @@
 				stroke-linecap="round"
 			/>
 			<path
-				d="M1456.67 81C1453.37 83.9319 1453.55 84.1099 1458 86.3334"
-				stroke="white"
-				stroke-width="14"
-				stroke-linecap="round"
-			/>
-			<path
 				d="M1518 71.6667C1516.51 72.3052 1517.65 74.5807 1518 75.6667C1521.85 87.666 1522.84 100.17 1524.37 112.704C1529.77 156.78 1532.24 201.799 1540.67 245.445C1540.73 245.751 1542.96 257.225 1545.7 258.926C1547.49 260.029 1548.12 255.271 1550 254.333"
 				stroke="white"
 				stroke-width="14"
@@ -155,15 +184,13 @@
 				stroke-width="14"
 				stroke-linecap="round"
 			/>
+			<path
+				d="M1454.24 87.3652C1456.37 85.9585 1460.18 84.4116 1462.84 85.2253C1463.55 85.2061 1462.59 87.9514 1463.05 88.2126C1466.58 90.2105 1470.42 92.5537 1472.75 96.041C1480.58 107.756 1466.45 124.134 1454.04 120.479C1446.73 118.326 1445.29 108.083 1446.28 101.581C1447.09 96.1616 1449.63 90.4097 1454.24 87.3652Z"
+				fill="#FF0000"
+				stroke="#FF0000"
+				stroke-width="9"
+			/>
 		</svg>
-	</div>
-	<div class="flex flex-col items-center gap-4">
-		<p class="text-xl font-semibold text-slate-400">May Subathon 2024</p>
-		<p class="max-w-md text-neutral-50">
-			31 days of live streaming, for the entire month of May 2024. Will he make it? Will he go
-			insane? Is he insane already? Many questions, not many answers. One thing is for sure
-			though... we're going to do it live 🫡<br />
-		</p>
 	</div>
 	{#if twitchReady}
 		<div class="flex h-64 max-w-96">
@@ -180,6 +207,105 @@
 	{:else}
 		<Skeleton class="h-[300px] w-[256px] rounded-lg" />
 	{/if}
+	<div class="flex flex-col items-center gap-8 rounded-lg border border-slate-800 p-8 md:p-16">
+		<div class="w-64 max-w-md">
+			<svg viewBox="0 0 1194 332" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path
+					d="M29.826 230.485C29.826 233.017 30.6071 235.625 29.7744 231.877C27.5872 222.035 23.7245 212.4 21.5748 202.225C13.4022 163.541 2.84211 122.263 5.69121 82.3761C6.26434 74.3523 9.47124 57.5905 14.7675 50.4027C25.6757 35.5987 40.6149 47.7725 48.649 57.7256C68.1883 81.9322 78.9713 115.107 86.9655 144.724C92.2654 164.359 95.465 184.587 96.4028 204.906C98.1225 242.167 87.0936 130.842 84.6964 93.6183C83.3499 72.7099 82.7888 52.7852 92.1225 33.4877C100.252 16.6793 116.357 -10.134 131.573 16.3665C152.553 52.9043 160.664 99.0809 168.498 139.877C175.492 176.302 179.235 213.12 182.989 249.978"
+					stroke="white"
+					stroke-width="9"
+				/>
+				<path
+					d="M243.326 110.739C243.326 108.927 243.639 105.17 241.005 105.17C236.891 105.17 234.006 109.768 231.929 112.751C218.072 132.647 217.792 162.669 224.967 185.103C233.574 212.017 249.093 189.523 253.536 173.655C258.421 156.21 258.351 134.799 251.577 117.753C245.478 102.407 261.975 149.176 268.904 164.166C276.412 180.408 286.415 193.933 298.093 207.278"
+					stroke="white"
+					stroke-width="9"
+				/>
+				<path
+					d="M308.304 113.524C308.304 109.182 308.119 115.674 308.304 117.341C310.14 133.868 314.796 151.243 319.959 166.951C320.37 168.203 326.448 191.348 334.243 183.969C340.927 177.642 339.669 162.708 339.865 154.78C340.046 147.402 339.757 138.701 340.071 131.264C340.243 127.189 339.903 114.212 345.434 125.334C367.437 169.576 378.559 222.832 381.069 271.896C381.906 288.261 386.149 321.739 363.071 325.993C349.744 328.449 334.151 323.475 322.846 316.762C310.012 309.139 303.972 297.839 294.38 287.109"
+					stroke="white"
+					stroke-width="9"
+				/>
+				<path
+					d="M534.799 154.263C532.268 156.794 531.789 158.443 531.705 162.36C531.222 184.731 534.505 210.851 550.992 227.647C570.136 247.151 603.57 244.574 619.529 222.232C633.747 202.327 626.692 178.76 615.558 159.42C596.844 126.916 566.112 103.158 542.225 74.8456C531.041 61.5893 514.36 41.3072 525.929 22.9662C530.271 16.0834 539.427 9.79504 547.073 7.49519C569.546 0.735196 552.145 10.1342 574.714 7.59835"
+					stroke="white"
+					stroke-width="9"
+				/>
+				<path
+					d="M663.827 128.272C665.366 140.583 673.238 157.881 678.679 168.703C682.449 176.2 691.19 194.799 702.401 194.488C714.201 194.16 717.103 172.739 718.079 165.196C719.631 153.194 718.71 140.319 714.778 128.839C712.492 122.164 710.451 122.42 706.527 118.061"
+					stroke="white"
+					stroke-width="9"
+				/>
+				<path
+					d="M738.088 29.8765C738.887 30.8756 738.988 31.83 739.222 33.0738C742.592 50.932 745.976 68.7382 748.814 86.7065C753.615 117.093 757.514 147.402 758.871 178.14C759.899 201.443 759.069 179.009 761.501 169.837C764.454 158.698 773.287 127.557 791.308 133.945C807.015 139.512 811.305 163.652 807.707 177.47C805.102 187.475 797.745 197.019 786.873 198.304C785.787 198.432 780.235 198.663 779.241 196.344C777.733 192.826 792.683 190.533 792.855 190.465"
+					stroke="white"
+					stroke-width="9"
+				/>
+				<path
+					d="M878.255 134.77C863.767 118.469 847.554 157.72 844.735 168.342C842.1 178.267 839.962 193.683 852.986 197.376C869.995 202.199 876.179 180.624 880.834 169.167C889.305 148.313 890.235 168.385 894.087 179.12C896.215 185.05 898.722 191.918 904.298 195.726C913.883 202.272 918.697 192.413 926.525 189.537"
+					stroke="white"
+					stroke-width="9"
+				/>
+				<path
+					d="M914.457 101.353C914.738 103.88 916.797 107.023 917.345 109.552C923.724 138.977 931.398 168.29 935.807 197.891"
+					stroke="white"
+					stroke-width="9"
+				/>
+				<path
+					d="M917.242 148.694C933.129 146.929 949.343 139.5 964.583 134.77"
+					stroke="white"
+					stroke-width="9"
+				/>
+				<path
+					d="M938.592 73.5049C941.659 73.8457 943.474 80.5195 944.058 82.1686C951.918 104.345 957.298 127.343 964.171 149.828C966.957 158.945 973.411 184.066 977.166 175.304C980.365 167.841 981.142 115.279 1003.05 134.048C1014.7 144.022 1012.33 163.629 1018.94 176.335C1023.77 185.631 1031.17 183.729 1039.77 183.968"
+					stroke="white"
+					stroke-width="9"
+				/>
+				<path
+					d="M1076.9 142.196C1076.9 126.975 1065.32 144.203 1064.47 151.943C1063.43 161.494 1065.66 173.035 1072.05 180.564C1079.11 188.87 1093.05 188.27 1097.22 177.16C1102.77 162.387 1088.01 147.634 1076.18 141.68C1064.36 135.73 1069.47 146.224 1070.4 151.478"
+					stroke="white"
+					stroke-width="9"
+				/>
+				<path
+					d="M1124.24 137.555C1124.5 139.86 1125.86 142.459 1126.36 144.723C1128.22 153.083 1129.58 161.576 1130.84 170.044C1132.5 181.182 1130.35 178.564 1129.5 169.734C1128.38 158 1128.62 145.294 1133.11 134.203C1138.88 119.982 1154.65 107.663 1164.88 125.9C1172.52 139.516 1173.47 156.87 1176.85 171.797C1179.65 184.202 1183.87 194.071 1189.22 205.318"
+					stroke="white"
+					stroke-width="9"
+				/>
+				<path
+					d="M71.5976 310.316C86.1661 310.316 100.841 308.474 115.329 307.376C140.94 305.435 166.597 303.302 192.271 302.374C201.851 302.028 217.17 301.684 227.133 302.89C257.266 306.537 221.459 303.226 245.182 308.459"
+					stroke="white"
+					stroke-width="9"
+				/>
+				<path
+					d="M707.455 290.822C756.288 290.822 805.462 287.424 854.223 285.046C938.901 280.917 1025.61 274.082 1108.46 295.463"
+					stroke="white"
+					stroke-width="9"
+				/>
+			</svg>
+		</div>
+		<p class="max-w-md text-slate-400">
+			31 days of live streaming, for the entire month of May 2024. Will he make it? Will he go
+			insane? Is he insane already? Many questions, not many answers. One thing is for sure
+			though... we're going to do it live 🫡<br />
+		</p>
+		<div class="grid max-w-xl grid-cols-4 items-center justify-between gap-4">
+			<div class="flex w-full flex-col gap-2 rounded-lg border border-slate-800 p-8">
+				<p class="text-3xl font-bold">{days}</p>
+				<p class="text-slate-400">days</p>
+			</div>
+			<div class="flex w-full flex-col gap-2 rounded-lg border border-slate-800 p-8">
+				<p class="text-3xl font-bold">{hours}</p>
+				<p class="text-slate-400">hours</p>
+			</div>
+			<div class="flex w-full flex-col gap-2 rounded-lg border border-slate-800 p-8">
+				<p class="text-3xl font-bold">{minutes}</p>
+				<p class="text-slate-400">mins</p>
+			</div>
+			<div class="flex w-full flex-col gap-2 rounded-lg border border-slate-800 p-8">
+				<p class="text-3xl font-bold">{seconds}</p>
+				<p class="text-slate-400">secs</p>
+			</div>
+		</div>
+	</div>
 	{#if session?.user}
 		<form action="?/check_in" method="POST" class="flex flex-col items-center gap-2">
 			<Button type="submit">Check-in</Button>

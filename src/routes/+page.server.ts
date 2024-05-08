@@ -3,6 +3,15 @@ import { error, redirect } from '@sveltejs/kit';
 import type { Page } from 'bits-ui';
 
 export const load = async ({ locals: { supabase } }) => {
+	const { data: endTimeData, error: endTimeError } = await supabase
+		.from('end_time')
+		.select('*')
+		.single();
+
+	if (endTimeError) {
+		return error(400, endTimeError);
+	}
+
 	const { data: checksInsByDay, error: checksInsByError } = await supabase
 		.from('check_ins_by_day')
 		.select('*');
@@ -11,7 +20,7 @@ export const load = async ({ locals: { supabase } }) => {
 		return error(400, checksInsByError);
 	}
 
-	return { checksInsByDay };
+	return { checksInsByDay, endTimeData };
 };
 
 export const actions = {
