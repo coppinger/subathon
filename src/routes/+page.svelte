@@ -4,6 +4,8 @@
 	import { format, eachDayOfInterval, parseISO, getYear } from 'date-fns';
 	import { X } from 'lucide-svelte';
 
+	import { Skeleton } from '$lib/components/ui/skeleton';
+
 	import { formatInTimeZone } from 'date-fns-tz';
 
 	import * as Dialog from '$lib/components/ui/dialog';
@@ -17,8 +19,6 @@
 
 	let arr = Object.entries(Object.groupBy(checksInsByDay, (item) => item.day!));
 
-	console.log(arr);
-
 	let dialogOpen = false;
 
 	let twitchReady: boolean = false;
@@ -30,7 +30,9 @@
 		if (form?.success) {
 			toast.success('Check-in successful!', { icon: '👏' });
 		}
-		if (form?.error) {
+		if (form?.error && form?.error.code === '23505') {
+			toast.success('Already checked-in!', { icon: ' 💖' });
+		} else if (form?.error) {
 			toast.error('Check-in failed!', { icon: '😥' });
 		}
 	});
@@ -47,52 +49,23 @@
 		<iframe
 			loading="lazy"
 			title="thecoppinger Twitch Stream"
-			src="https://player.twitch.tv/?autoplay=true&muted=true&parent=www.thecoppinger.com&channel=thecoppinger"
+			src="https://player.twitch.tv/?autoplay=true&muted=true&parent=www.thecoppinger.com&channel=thecoppinger&parent=localhost"
 			height="300px"
 			width="400px"
 		>
 		</iframe>
 	{:else}
-		<div class="h-[300px] w-full bg-slate-500"></div>
+		<Skeleton class="h-[300px] w-[400px] rounded-lg" />
 	{/if}
-	<!-- {#if arr[0][0] < new Date().toString()}
-		<p class="text-xl font-semibold text-slate-400">
-			{format(new Date(), 'EEEE, MMMM d, yyyy')}
-		</p>
-		{#if session?.user}
-			<form action="?/check_in" method="POST" class="flex flex-col items-center gap-2">
-				<Button type="submit">Check-in</Button>
-				{#if form?.error}
-					<p class="text-red-500">{form.error}</p>
-				{/if}
-			</form>
-		{:else}
-			<Dialog.Root bind:open={dialogOpen}>
-				<Dialog.Trigger>
-					<Button>Check-in</Button>
-				</Dialog.Trigger>
-				<Dialog.Content>
-					<Dialog.Header>
-						<Dialog.Title>Login with Twitch</Dialog.Title>
-						<Dialog.Description>
-							You'll need to login with your Twitch account to check-in.
-						</Dialog.Description>
-					</Dialog.Header>
-					<Dialog.Footer>
-						<Button variant="outline" on:click={() => (dialogOpen = false)}>Cancel</Button>
-						<form action="?/login" method="POST">
-							<Button type="submit">Login</Button>
-						</form>
-					</Dialog.Footer>
-				</Dialog.Content>
-			</Dialog.Root>
-		{/if}
-	{/if} -->
 	{#if session?.user}
 		<form action="?/check_in" method="POST" class="flex flex-col items-center gap-2">
 			<Button type="submit">Check-in</Button>
-			{#if form?.error}
-				<p class="text-red-500">{form.error}</p>
+			{#if form?.error && form?.error.code === '23505'}
+				<p class="text-green-500">You've already checked in today, homie! 💖</p>
+			{:else if form?.error}
+				<p class="text-red-500">
+					Sorry, something's gone wrong. Please hop on the stream and let me know what happened.
+				</p>
 			{/if}
 		</form>
 	{:else}
@@ -159,52 +132,7 @@
 			{/if}
 		{/if}
 	{/each}
-
-	<!-- <pre>{JSON.stringify(checkInsWithProfiles, null, 2)}</pre> -->
-	<!-- 
-	{#each datesWithCheckins as date, i}
-		<p class="text-xl font-semibold text-slate-400">
-			{date.date}
-		</p>
-		<div class="flex flex-wrap gap-2">
-			{#each date.checkins as { username, pfp_url }}
-				<a href={`https://www.twitch.tv/${username}`} target="_blank">
-					<img class="h-16 w-16 rounded-full" src={pfp_url} alt="" /></a
-				>
-			{/each}
-		</div>
-		{#if new Date().toLocaleDateString('en-US', dateOptions) === date.date}
-			{#if session?.user}
-				<form action="?/check_in" method="POST" class="flex flex-col items-center gap-2">
-					<Button type="submit">Check-in</Button>
-					{#if form?.error}
-						<p class="text-red-500">{form.error}</p>
-					{/if}
-				</form>
-			{:else}
-				<Dialog.Root bind:open={dialogOpen}>
-					<Dialog.Trigger>
-						<Button>Check-in</Button>
-					</Dialog.Trigger>
-					<Dialog.Content>
-						<Dialog.Header>
-							<Dialog.Title>Login with Twitch</Dialog.Title>
-							<Dialog.Description>
-								You'll need to login with your Twitch account to check-in.
-							</Dialog.Description>
-						</Dialog.Header>
-						<Dialog.Footer>
-							<Button variant="outline" on:click={() => (dialogOpen = false)}>Cancel</Button>
-							<form action="?/login" method="POST">
-								<Button type="submit">Login</Button>
-							</form>
-						</Dialog.Footer>
-					</Dialog.Content>
-				</Dialog.Root>
-			{/if}
-		{/if}
-	{/each} -->
-	<form action="?/dummydata" method="POST">
+	<!-- <form action="?/dummydata" method="POST">
 		<button>Dummy Data</button>
-	</form>
+	</form> -->
 </div>

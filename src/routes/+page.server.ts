@@ -8,7 +8,6 @@ export const load = async ({ locals: { supabase } }) => {
 		.select('*');
 
 	if (checksInsByError) {
-		console.log(checksInsByError);
 		return error(400, checksInsByError);
 	}
 
@@ -16,65 +15,65 @@ export const load = async ({ locals: { supabase } }) => {
 };
 
 export const actions = {
-	dummydata: async ({ locals: { supabase } }) => {
-		const { data: userData, error: userError } = await supabase
-			.from('profiles')
-			.select('*')
-			.eq('twitch_username', 'thecoppinger')
-			.single();
+	// dummydata: async ({ locals: { supabase } }) => {
+	// 	const { data: userData, error: userError } = await supabase
+	// 		.from('profiles')
+	// 		.select('*')
+	// 		.eq('twitch_username', 'thecoppinger')
+	// 		.single();
 
-		if (userError) {
-			console.error(userError);
-			return { userError };
-		}
+	// 	if (userError) {
+	// 		console.error(userError);
+	// 		return { userError };
+	// 	}
 
-		// Generate a UUID
+	// 	// Generate a UUID
 
-		const payload = [
-			{
-				id: crypto.randomUUID(),
-				created_at: new Date().toISOString(),
-				profile_id: userData.id
-			},
-			{
-				id: crypto.randomUUID(),
-				created_at: '2024-04-04 21:38:12+00',
-				profile_id: userData.id
-			},
-			{
-				id: crypto.randomUUID(),
-				created_at: '2024-04-03 21:38:12+00',
-				profile_id: userData.id
-			},
-			{
-				id: crypto.randomUUID(),
-				created_at: '2024-04-02 21:38:12+00',
-				profile_id: userData.id
-			},
-			{
-				id: crypto.randomUUID(),
-				created_at: '2024-03-25 21:38:12+00',
-				profile_id: userData.id
-			},
-			{
-				id: crypto.randomUUID(),
-				created_at: '2024-04-02 21:38:12+00',
-				profile_id: userData.id
-			},
-			{
-				id: crypto.randomUUID(),
-				created_at: '2024-04-01 21:38:12+00',
-				profile_id: userData.id
-			}
-		];
+	// 	const payload = [
+	// 		{
+	// 			id: crypto.randomUUID(),
+	// 			created_at: new Date().toISOString(),
+	// 			profile_id: userData.id
+	// 		},
+	// 		{
+	// 			id: crypto.randomUUID(),
+	// 			created_at: '2024-04-04 21:38:12+00',
+	// 			profile_id: userData.id
+	// 		},
+	// 		{
+	// 			id: crypto.randomUUID(),
+	// 			created_at: '2024-04-03 21:38:12+00',
+	// 			profile_id: userData.id
+	// 		},
+	// 		{
+	// 			id: crypto.randomUUID(),
+	// 			created_at: '2024-04-02 21:38:12+00',
+	// 			profile_id: userData.id
+	// 		},
+	// 		{
+	// 			id: crypto.randomUUID(),
+	// 			created_at: '2024-03-25 21:38:12+00',
+	// 			profile_id: userData.id
+	// 		},
+	// 		{
+	// 			id: crypto.randomUUID(),
+	// 			created_at: '2024-04-02 21:38:12+00',
+	// 			profile_id: userData.id
+	// 		},
+	// 		{
+	// 			id: crypto.randomUUID(),
+	// 			created_at: '2024-04-01 21:38:12+00',
+	// 			profile_id: userData.id
+	// 		}
+	// 	];
 
-		const { error } = await supabase.from('check_ins').insert(payload);
+	// 	const { error } = await supabase.from('check_ins').insert(payload);
 
-		if (error) {
-			console.error(error);
-			return { error };
-		}
-	},
+	// 	if (error) {
+	// 		console.error(error);
+	// 		return { error };
+	// 	}
+	// },
 	login: async ({ locals: { supabase } }) => {
 		const { data, error } = await supabase.auth.signInWithOAuth({
 			provider: 'twitch',
@@ -105,27 +104,7 @@ export const actions = {
 
 		const formattedStartDate = startDate.toISOString();
 
-		console.log(formattedStartDate);
-
-		// Let's check if the user already has a check-in for today
-		const { data: checkInsData, error: checkInsError } = await supabase
-			.from('check_ins')
-			.select('*')
-			.eq('profile_id', session?.user?.id)
-			.gte('created_at', formattedStartDate);
-
-		if (checkInsError) {
-			console.error(checkInsError);
-			return { checkInsError };
-		}
-
-		if (checkInsData.length > 0) {
-			console.log("Homie, you've already checked in today!");
-			return { error: "You've already checked in today homie! 💖" };
-		}
-
 		const { error } = await supabase.from('check_ins').insert({
-			created_at: new Date().toISOString(),
 			profile_id: session?.user?.id
 		});
 
