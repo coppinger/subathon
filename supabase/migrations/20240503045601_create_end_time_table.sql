@@ -7,6 +7,7 @@ CREATE TABLE "end_time"(
 
 ALTER TABLE end_time ENABLE ROW LEVEL SECURITY;
 
+-- Enable realtime updates
 CREATE POLICY "The end time is viewable by everyone." ON end_time
     FOR SELECT
         USING (TRUE);

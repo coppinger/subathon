@@ -2,29 +2,20 @@
 	import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from '$env/static/public';
 
 	export let data;
-	let { session, user, end_time, checkInsWithProfiles } = data;
-	$: ({ session, user } = data);
+	let { endTimeData, supabase } = data;
+	$: ({ endTimeData, supabase } = data);
 	let devMode: boolean = false;
-
-	import { createClient } from '@supabase/supabase-js';
-
-	const client = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY);
 
 	import { onMount, onDestroy } from 'svelte';
 
-	let endDate: Date = new Date(end_time.end_time); // Replace with your desired end date
+	let endDate: Date = new Date(endTimeData.end_time);
 	let remainingTime = '';
 
-	const changes = client
-		.channel('end-time')
-		.on(
-			'postgres_changes',
-			{
-				event: 'UPDATE', // Listen only to UPDATEs
-				schema: 'public'
-			},
-			(payload) => (endDate = new Date(payload.new.end_time))
-		)
+	supabase
+		.channel('end_time')
+		.on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'end_time' }, (payload) => {
+			endDate = new Date(payload.new.end_time);
+		})
 		.subscribe();
 
 	let intervalId: NodeJS.Timeout;
@@ -109,4 +100,10 @@
 		<p class="font-bold">Remaining: {remainingTime}</p>
 		<p class="font-bold">Local time: {localTime}</p>
 	</button>
+
+	<button
+		on:click={() => {
+			testUpdate();
+		}}>Test update</button
+	>
 </div>
